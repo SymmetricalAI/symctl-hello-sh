@@ -1,0 +1,32 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "*.*.*"
+
+jobs:
+  release:
+    name: Release
+
+    strategy:
+      matrix:
+        os: [ any ]
+        architecture: [ any ]
+
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: prepare archives
+        run: |
+          tar -cvzf symctl-hello-sh-${{ matrix.os }}-${{ matrix.architecture }}.tar.gz bin/symctl-hello-sh plugins/symctl-hello-sh/README.txt
+          zip -r symctl-hello-sh-${{ matrix.os }}-${{ matrix.architecture }}.zip bin/symctl-hello-sh plugins/symctl-hello-sh/README.txt
+      - uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            symctl-hello-sh-${{ matrix.os }}-${{ matrix.architecture }}.tar.gz
+            symctl-hello-sh-${{ matrix.os }}-${{ matrix.architecture }}.zip
+          tag_name: ${{ github.ref }}
+          release_name: ${{ github.ref }}
+          body: |
+            Release ${{ github.ref }}
