@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+
+echo "Hello from hello-sh plugin!"
+echo "Args: $*"
+sleep 1
+echo "One!"
+sleep 1
+echo "Two!"
+sleep 1
+echo "Three!"
+echo "Done!"
