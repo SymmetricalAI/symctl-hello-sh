@@ -33,4 +33,4 @@ jobs:
           git config --local user.name "GitHub Action"
           git add manifest.json
           git commit -m "[automated commit] Update manifest.json with release ${{ github.ref_name }}"
-          git push
+          git push origin HEAD:main
