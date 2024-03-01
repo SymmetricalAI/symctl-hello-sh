@@ -24,6 +24,8 @@ jobs:
             Release ${{ github.ref_name }}
       - name: update manifest
         run: |
+          # Ensure we're on the default branch and not in a detached HEAD state
+          git checkout main
           python .github/workflows/update-manifest.py manifest.json ${{ github.ref_name }} ${{ fromJSON(steps.release.outputs.assets)[0].browser_download_url }}
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
