@@ -11,19 +11,16 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    permissions:
-      contents: write
-
     steps:
       - uses: actions/checkout@v4
       - name: prepare archives
         run: |
-          tar -cvzf symctl-hello-sh-any-any.tar.gz bin/symctl-hello-sh plugins/symctl-hello-sh/README.txt
+          tar -cvzf symctl-hello-sh-any-any-${{ github.ref_name }}.tar.gz bin/symctl-hello-sh plugins/symctl-hello-sh/README.txt
       - uses: softprops/action-gh-release@v1
         id: release
         with:
           files: |
-            symctl-hello-sh-any-any.tar.gz
+            symctl-hello-sh-any-any-${{ github.ref_name }}.tar.gz
           body: |
             Release ${{ github.ref_name }}
       - name: update manifest
