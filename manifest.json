@@ -12,5 +12,19 @@
       }
     ],
     "created": "2024-01-01T14:39:19.296231407Z"
+  },
+  {
+    "name": "hello-sh",
+    "binaryName": "symctl-hello-sh",
+    "version": "0.0.2",
+    "description": "Shell Hello World plugin.",
+    "urls": [
+      {
+        "platform": "any",
+        "os": "any",
+        "url": "https://github.com/SymmetricalAI/symctl-hello-sh/releases/download/0.0.2/symctl-hello-sh-any-any.tar.gz"
+      }
+    ],
+    "created": "2024-03-01T00:27:25.138763Z"
   }
 ]
