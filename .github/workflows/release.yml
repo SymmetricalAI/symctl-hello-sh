@@ -9,24 +9,24 @@ jobs:
   release:
     name: Release
 
-    strategy:
-      matrix:
-        os: [ any ]
-        architecture: [ any ]
-
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - name: prepare archives
         run: |
-          tar -cvzf symctl-hello-sh-${{ matrix.os }}-${{ matrix.architecture }}.tar.gz bin/symctl-hello-sh plugins/symctl-hello-sh/README.txt
-          zip -r symctl-hello-sh-${{ matrix.os }}-${{ matrix.architecture }}.zip bin/symctl-hello-sh plugins/symctl-hello-sh/README.txt
+          tar -cvzf symctl-hello-sh-any-any.tar.gz bin/symctl-hello-sh plugins/symctl-hello-sh/README.txt
       - uses: softprops/action-gh-release@v1
+        id: release
         with:
           files: |
-            symctl-hello-sh-${{ matrix.os }}-${{ matrix.architecture }}.tar.gz
-            symctl-hello-sh-${{ matrix.os }}-${{ matrix.architecture }}.zip
-          tag_name: ${{ github.ref }}
-          release_name: ${{ github.ref }}
+            symctl-hello-sh-any-any.tar.gz
           body: |
-            Release ${{ github.ref }}
+            Release ${{ github.ref_name }}
+      - name: update manifest
+        run: |
+          python .github/workflows/update-manifest.py manifest.json ${{ github.ref_name }} ${{ fromJSON(steps.release.outputs.assets)[0].browser_download_url }}
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add manifest.json
+          git commit -m "Update manifest.json with release ${{ github.ref_name }}"
+          git push
