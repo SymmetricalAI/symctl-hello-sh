@@ -10,6 +10,10 @@ jobs:
     name: Release
 
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
     steps:
       - uses: actions/checkout@v4
       - name: prepare archives
@@ -24,11 +28,9 @@ jobs:
             Release ${{ github.ref_name }}
       - name: update manifest
         run: |
-          # Ensure we're on the default branch and not in a detached HEAD state
-          git checkout main
           python .github/workflows/update-manifest.py manifest.json ${{ github.ref_name }} ${{ fromJSON(steps.release.outputs.assets)[0].browser_download_url }}
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add manifest.json
-          git commit -m "Update manifest.json with release ${{ github.ref_name }}"
+          git commit -m "[automated commit] Update manifest.json with release ${{ github.ref_name }}"
           git push
